@@ -14,7 +14,7 @@ export default {
       fadeGray: '#E1E7EE'
     },
     boxShadow: {
-      'custom': '0px 4px 40px 0px rgba(225, 237, 255, 0.20)',
+      'custom': '0px 4px 40px 0px rgba(225, 237, 255, .70)',
     },
     extend: {},
   },
