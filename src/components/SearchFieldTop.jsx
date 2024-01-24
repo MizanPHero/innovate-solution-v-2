@@ -1,6 +1,7 @@
 import { useState } from "react";
 import downArrow from "../assets/down-arrow.svg";
 import roundTrip from "../assets/round-trip.png";
+import switchIcon from "../assets/switch.png";
 import RadioButton from "./RadioButton";
 import MultiCity from "./SvgElements/MultiCity";
 import OneWay from "./SvgElements/OneWay";
@@ -64,18 +65,18 @@ const SearchFieldTop = () => {
                 <div className="flex flex-col sm:flex-row gap-4 items-center sm:gap-[18px] justify-between w-full mt-6">
                     {/* left side tabs */}
                     <div className="flex flex-col w-full sm:w-auto items-center sm:items-start gap-2 pl-[14px] pr-[14px]  sm:pr-[2px] py-[8px] rounded-2xl  bg-primaryBlue">
-                        <div className="flex items-center justify-center gap-2">
+                        <button className="flex items-center justify-center gap-2">
                             <OneWay/>
                             <span className="text-sm font-normal text-[#fff]">One-Way</span>
-                        </div>
-                        <div className="flex items-center bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-3 px-3 py-[6px] justify-center gap-2">
+                        </button>
+                        <button className="flex items-center bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-3 px-3 py-[6px] justify-center gap-2">
                             <img src={roundTrip}/>
                             <span className="text-sm font-normal text-[#fff]">Round-Trip</span>
-                        </div>
-                        <div className="flex items-center justify-center gap-2">
+                        </button>
+                        <button className="flex items-center justify-center gap-2">
                             <MultiCity/>
                             <span className="text-sm font-normal text-[#fff]">Multi-City</span>
-                        </div>
+                        </button>
                     </div>
 
                     {/* from and to element */}
@@ -91,7 +92,11 @@ const SearchFieldTop = () => {
                             </div>
 
                             {/* Separator */}
-                            <div className="mx-2 border-r border-fadeGray"></div>
+                            <div className="relative mx-2 border-r border-fadeGray">
+                                <button className="absolute hidden sm:flex border border-fadeGray top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-[#fff]">
+                                    <img src={switchIcon}/>
+                                </button>
+                            </div>
 
                             {/* Second Child Div */}
                             <div className="my-4 ml-3 mr-2 sm:ml-12 sm:mr-7 ">
@@ -147,7 +152,8 @@ const SearchFieldTop = () => {
                   
                     
                 </div>
-
+                {/* third line elements */}
+                {/* third line elements */}
                 <div className="flex justify-center mt-5">
                     <button className="text-[#fff] px-[66px] py-[13px] rounded-3xl bg-primaryBlue hover:bg-[#2b8fff]">Search</button>
                 </div>
