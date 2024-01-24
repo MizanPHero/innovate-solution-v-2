@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GoDash, GoPlus } from "react-icons/go";
 import downArrow from "../assets/down-arrow.svg";
 import roundTrip from "../assets/round-trip.png";
 import switchIcon from "../assets/switch.png";
@@ -21,6 +22,50 @@ const SearchFieldTop = () => {
     const [selectedOption, setSelectedOption] = useState('flight');
     const [isDepartDateMenu, setIsDepartDateMenu] = useState(false);
     const [isReturnDateMenu, setIsReturnDateMenu] = useState(false);
+    const [isPassengerMenu, setIsPassengerMenu] = useState(false);
+
+
+    //passenger
+    const [adultValue, setAdultValue] = useState(1);
+    const [childrenValue, setChildrenValue] = useState(0);
+    const [childrenAges, setChildrenAges] = useState([]);
+
+    const togglePassengerMenu = () => {
+        setIsPassengerMenu(!isPassengerMenu);
+    };
+
+    const closePassengerMenu = () => {
+        setIsPassengerMenu(false);
+    };
+
+    const decreaseAdult = () => {
+        if (adultValue > 1) {
+            setAdultValue(adultValue - 1);
+        }
+    };
+
+    const increaseAdult = () => {
+        setAdultValue(adultValue + 1);
+    };
+
+    const decreaseChildren = () => {
+
+        setChildrenValue(childrenValue - 1);
+
+    };
+
+
+    const increaseChildren = () => {
+        setChildrenValue(childrenValue + 1);
+    };
+
+
+    const handleChildAgeChange = (index, age) => {
+        const updatedAges = [...childrenAges];
+        updatedAges[index] = age;
+        setChildrenAges(updatedAges);
+    };
+
 
 
     //from destination
@@ -103,7 +148,7 @@ const SearchFieldTop = () => {
 
     //oneway and roundtrip button
     const [isOneWayClicked, setOneWayClicked] = useState(false);
-    const [isRoundTripClicked, setRoundTripClicked] = useState(false);
+    const [isRoundTripClicked, setRoundTripClicked] = useState(true);
 
     const handleOneWayClick = () => {
         setRoundTripClicked(false);
@@ -437,7 +482,7 @@ const SearchFieldTop = () => {
 
                             {/* Second Child Div */}
                             {/* Return Child Div */}
-                            <button className="flex flex-col items-center w-full m-4" id="return-menu-button"
+                            <button className={`flex flex-col items-center w-full m-4 ${isOneWayClicked ? 'disabledButton' : ''}`} id="return-menu-button"
                                 aria-expanded={isReturnDateMenu}
                                 aria-haspopup="true"
                                 disabled={isOneWayClicked}
@@ -540,15 +585,143 @@ const SearchFieldTop = () => {
                         </div>
                     </div>
 
+                    {/* Passenger */}
                     <div className="flex w-full sm:w-[177px]">
-                        <div className="flex w-full border rounded-2xl border-fadeGray">
-                            <div className="flex flex-col items-center m-4 mr-14">
+                        <div className="relative flex w-full border rounded-2xl border-fadeGray">
+                            {/* <div className="flex flex-col items-center m-4 mr-14">
                                 <div>
                                     <p className="font-normal text-[13px] text-lightDark">Passengers</p>
                                     <p className="text-lg font-medium text-deepDark">1 Guest</p>
                                     <p className="font-normal text-[13px] text-lightDark">Economy Class</p>
                                 </div>
-                            </div>
+                            </div> */}
+                            <button className="flex flex-col items-center m-4 mr-14" id="passenger-menu-button"
+                                aria-expanded={isPassengerMenu}
+                                aria-haspopup="true"
+                                onClick={togglePassengerMenu}>
+                                <div className="text-left">
+                                    <p className="font-normal text-[13px] text-lightDark">Passengers</p>
+                                    <p className="text-lg font-medium text-deepDark">1 Guest</p>
+                                    <p className="font-normal text-[13px] text-lightDark">Economy Class</p>
+                                </div>
+                            </button>
+
+
+                            {isPassengerMenu && (
+                                <div
+                                    className="absolute right-0 z-50 py-4 mt-3 origin-top-right bg-[#fff] rounded-md shadow-lg top-20 min-w-max ring-1 ring-[#000] ring-opacity-5 focus:outline-none"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="menu-button"
+                                    tabIndex="-1"
+                                >
+                                    {/* adult passesnger */}
+                                    <div className="flex items-center justify-between gap-5 px-3">
+                                        <div>
+                                            <span className="block text-base font-medium">Adults</span>
+                                            <span className="block text-sm">&gt;12 Years</span>
+                                        </div>
+
+                                        <div className="flex items-center justify-center gap-3">
+                                            <button
+                                                className="p-1 rounded-md bg-[#e2e8f0] hover:bg-[#cbd5e1]"
+                                                onClick={decreaseAdult}
+                                                type="button"
+                                                disabled={adultValue === 1}
+                                                style={{ opacity: adultValue === 1 ? 0.4 : 1 }}
+                                            >
+                                                <GoDash />
+                                            </button>
+
+                                            <span className="block text-base font-normal" >{adultValue}</span>
+                                            
+                                            <button
+                                                className="p-1 rounded-md bg-[#e2e8f0] hover:bg-[#cbd5e1]"
+                                                onClick={increaseAdult}
+                                                type="button"
+                                            >
+                                                <GoPlus />
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+
+                                    {/* child passenger */}
+
+                                    <div className="flex items-center justify-between px-3 pt-4">
+                                        <div>
+                                            <span className="block text-base font-medium">Children</span>
+                                            <span className="block text-sm">2-12 Years</span>
+                                        </div>
+
+                                        <div className="flex items-center justify-center gap-3">
+                                            <button
+                                                className="p-1 rounded-md bg-[#e2e8f0] hover:bg-[#cbd5e1]"
+                                                onClick={decreaseChildren}
+                                                type="button"
+                                                disabled={childrenValue === 0}
+                                                style={{ opacity: childrenValue === 0 ? 0.4 : 1 }}
+                                            >
+
+                                                <GoDash />
+
+                                            </button>
+
+                                            <span className="block text-base font-normal" >{childrenValue}</span>
+                                            <button
+                                                className="p-1 rounded-md bg-[#e2e8f0] hover:bg-[#cbd5e1]"
+                                                onClick={increaseChildren}
+                                                type="button"
+                                            >
+
+                                                <GoPlus />
+
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Render age selection for each child */}
+                                    <div>
+                                        {childrenAges.map((age, index) => (
+                                            <AgeSelection key={index} index={index} age={age} onChange={handleChildAgeChange} />
+                                        ))}
+                                    </div>
+
+
+                                    <div className="px-6 pt-3 ">
+                                        <button className="w-full rounded-md px-6 py-2 bg-primaryBlue text-[#fff]">Apply</button>
+                                    </div>
+
+                                </div>
+              )}
+
+
+
+
+                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         </div>
                     </div>
                   

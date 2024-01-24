@@ -33,3 +33,7 @@ input[type="radio"] + label:hover span {
   border-color: #636366;
   box-shadow: 0px 0px 0px 3px white inset;
 }
+.disabledButton {
+  opacity: 50%;
+  cursor: not-allowed;
+}
