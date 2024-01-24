@@ -101,6 +101,23 @@ const SearchFieldTop = () => {
         { id: "transfer", value: "transfer", label: "Transfer" },
     ];
 
+    //oneway and roundtrip button
+    const [isOneWayClicked, setOneWayClicked] = useState(false);
+    const [isRoundTripClicked, setRoundTripClicked] = useState(false);
+
+    const handleOneWayClick = () => {
+        setRoundTripClicked(false);
+        setOneWayClicked(true);
+    };
+
+    const handleRoundTripClick = () => {
+        // Perform any desired actions here
+        // For demonstration purposes, let's just set the state
+        setRoundTripClicked(true);
+        setOneWayClicked(false); // Reset one-way button state
+      };
+
+    
 
     // console.log(selectDate.toDate().toDateString());
 
@@ -186,11 +203,11 @@ const SearchFieldTop = () => {
                 <div className="flex flex-col sm:flex-row gap-4 items-center sm:gap-[18px] justify-between w-full mt-6">
                     {/* left side tabs */}
                     <div className="flex flex-col w-full sm:w-[125px] items-center sm:items-start gap-2 pl-[14px] pr-[14px]  sm:pr-[2px] py-[8px] rounded-2xl  bg-primaryBlue">
-                        <button className="flex items-center justify-center gap-2">
+                        <button className={`flex items-center justify-center gap-2 ${isOneWayClicked ? 'bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-[6px] px-3 py-[6px]' : ''}`} onClick={handleOneWayClick}>
                             <OneWay/>
                             <span className="text-sm font-normal text-[#fff]">One-Way</span>
                         </button>
-                        <button className="flex items-center bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-3 px-3 py-[6px] justify-center gap-2">
+                        <button className={`flex items-center justify-center gap-2 ${isRoundTripClicked ? 'bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-3 px-3 py-[6px]' : ''}`} onClick={handleRoundTripClick}>
                             <img src={roundTrip}/>
                             <span className="text-sm font-normal text-[#fff]">Round-Trip</span>
                         </button>
@@ -204,15 +221,7 @@ const SearchFieldTop = () => {
                     <div className="flex w-auto sm:w-[463px]">
                         <div className="relative flex justify-between w-full border rounded-2xl border-fadeGray">
                             {/* First Child Div */}
-                            {/* From */}
-                            {/* <div className="my-4 ml-4 mr-3 sm:my-3 sm:ml-5 sm:mr-11 ">
-                                <div>
-                                    <p className="font-normal text-[15px] text-lightDark">From</p>
-                                    <p className="text-lg font-medium text-deepDark">Jakarta</p>
-                                    <p className="font-normal text-[15px] text-lightDark">Soekarno-Hatta Airport</p>
-                                </div>
-                            </div> */}
-                                
+                            {/* From */}  
                             <button
                                 type="button"
                                 className="w-full my-4 ml-4 mr-3 sm:my-3 sm:ml-7 sm:mr-7"
@@ -261,8 +270,6 @@ const SearchFieldTop = () => {
                                 </div>
                             )}
 
-
-
                             {/* Separator */}
                             <div className="relative mx-2 border-r border-fadeGray">
                                 <button className="absolute hidden hover:bg-fadeGray sm:flex border border-fadeGray top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center justify-center w-10 h-10 rounded-full bg-[#fff]" onClick={handleDestinationExchange}>
@@ -271,14 +278,7 @@ const SearchFieldTop = () => {
                             </div>
 
                             {/* Second Child Div */}
-                            {/* <div className="my-4 ml-3 mr-2 sm:ml-12 sm:mr-7 ">
-                                <div>
-                                    <p className="font-normal text-[15px] text-lightDark">To</p>
-                                    <p className="text-lg font-medium text-deepDark">Jakarta</p>
-                                    <p className="font-normal text-[15px] text-lightDark">Soekarno-Hatta Airport</p>
-                                </div>
-                            </div> */}
-
+                            {/* To */}
                             <button
                                 type="button"
                                 className="w-full my-4 ml-3 mr-2 sm:ml-7 sm:mr-7"
@@ -324,12 +324,10 @@ const SearchFieldTop = () => {
                                     </div>
                                 </div>
                                 )}
-
-
                         </div>
                     </div>
 
-                    {/* depart and return element */}
+                    {/* depart and return date element */}
                     <div className="flex w-auto sm:w-[351px]">
                         <div className="relative flex w-full border rounded-2xl border-fadeGray">
                             {/* First Child Div */}
@@ -439,18 +437,10 @@ const SearchFieldTop = () => {
 
                             {/* Second Child Div */}
                             {/* Return Child Div */}
-                            {/* <div className="flex flex-col items-center m-4">
-                                <div>
-                                    <p className="font-normal text-[13px] text-lightDark">Return</p>
-                                    <p className="text-lg font-medium text-deepDark">4 January 2024</p>
-                                    <p className="font-normal text-[13px] text-lightDark">Sunday</p>
-                                </div>
-                            </div> */}
-
-
                             <button className="flex flex-col items-center w-full m-4" id="return-menu-button"
                                 aria-expanded={isReturnDateMenu}
                                 aria-haspopup="true"
+                                disabled={isOneWayClicked}
                                 onClick={toggleReturnMenu}>
                                 <div className="text-left">
                                     <p className="font-normal text-[13px] text-lightDark">Return</p>
@@ -547,12 +537,8 @@ const SearchFieldTop = () => {
 
                                 </div>
                             )}
-
-
                         </div>
                     </div>
-
-
 
                     <div className="flex w-full sm:w-[177px]">
                         <div className="flex w-full border rounded-2xl border-fadeGray">
