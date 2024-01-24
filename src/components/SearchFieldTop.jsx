@@ -6,14 +6,39 @@ import RadioButton from "./RadioButton";
 import MultiCity from "./SvgElements/MultiCity";
 import OneWay from "./SvgElements/OneWay";
 
+
+// Calendar imports
+
+import dayjs from "dayjs";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { generateDate, months } from "../utils/calendar";
+import cn from "../utils/cn";
+
+
+
 const SearchFieldTop = () => {
 
     const [selectedOption, setSelectedOption] = useState('flight');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    // calendar
+    const days = ["S", "M", "T", "W", "T", "F", "S"];
+	const currentDate = dayjs();
+	const [today, setToday] = useState(currentDate);
+	const [selectDate, setSelectDate] = useState(currentDate);
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
 
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+      };
+    
+      const closeMenu = () => {
+        setIsMenuOpen(false);
+      };
 
     const options = [
         { id: "hotel", value: "hotel", label: "Hotel" },
@@ -22,7 +47,45 @@ const SearchFieldTop = () => {
     ];
 
 
-    console.log(selectedOption);
+    // console.log(selectDate.toDate().toDateString());
+
+    const getFullDayName = (abbreviatedDay) => {
+        const daysMap = {
+            "Sun": "Sunday",
+            "Mon": "Monday",
+            "Tue": "Tuesday",
+            "Wed": "Wednesday",
+            "Thu": "Thursday",
+            "Fri": "Friday",
+            "Sat": "Saturday"
+        };
+    
+        return daysMap[abbreviatedDay] || abbreviatedDay;
+    };
+    
+    
+    const dateString = selectDate.toDate().toDateString();
+    
+  
+    const dateParts = dateString.split(' ');
+    
+   
+    const abbreviatedDayOfWeek = dateParts[0]; 
+    const formattedDate = dateParts.slice(1).join(' '); 
+    
+    
+    const fullDayOfWeek = getFullDayName(abbreviatedDayOfWeek);
+    
+    
+    const formattedDateWithFullDay = `${selectDate.format('D')} ${selectDate.format('MMMM YYYY')}`;
+    
+    
+    console.log(fullDayOfWeek); // Output: "Saturday"
+    console.log(formattedDateWithFullDay); // Output: "27 January 2024"
+
+
+
+
 
     return (
         <div className='container'>
@@ -111,20 +174,114 @@ const SearchFieldTop = () => {
 
                     {/* depart and return element */}
                     <div className="flex">
-                        <div className="flex border rounded-2xl border-fadeGray">
+                        <div className="relative flex border rounded-2xl border-fadeGray">
                             {/* First Child Div */}
-                            <div className="flex flex-col items-center mx-5 my-3">
+                            {/* Depart element */}
+                            <button className="flex flex-col items-center mx-4 my-3" id="menu-button"
+                                aria-expanded={isMenuOpen}
+                                aria-haspopup="true"
+                                onClick={toggleMenu}>
                                 <div>
                                     <p className="font-normal text-[13px] text-lightDark">Depart</p>
-                                    <p className="text-lg font-medium text-deepDark">4 January 2024</p>
-                                    <p className="font-normal text-[13px] text-lightDark">Sunday</p>
+                                    <p className="text-lg font-medium text-deepDark">{formattedDateWithFullDay}</p>
+                                    <p className="font-normal text-[13px] text-lightDark">{fullDayOfWeek}</p>
                                 </div>
-                            </div>
+                            </button>
 
+                            {isMenuOpen && (
+                                <div
+                                    className="absolute top-28 sm:top-24 -right-[30px] sm:right-0 z-50 py-6 mt-2 origin-top-right bg-[#fff] rounded-md shadow-lg ring-1 ring-[#000] ring-opacity-5 focus:outline-none"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="menu-button"
+                                    tabIndex="-1"
+                                >
+                                    <div className="px-0 py-1" role="none">
+                                        <div className="px-4 w-96 h-96">
+                                            <div className="flex items-center justify-between">
+                                                <h1 className="font-semibold select-none">
+                                                    {months[today.month()]}, {today.year()}
+                                                </h1>
+                                                <div className="flex items-center gap-10 ">
+                                                    <GrFormPrevious
+                                                        className="w-5 h-5 transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(today.month(today.month() - 1));
+                                                        }}
+                                                    />
+                                                    <h1
+                                                        className="transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(currentDate);
+                                                        }}
+                                                    >
+                                                        Today
+                                                    </h1>
+                                                    <GrFormNext
+                                                        className="w-5 h-5 transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(today.month(today.month() + 1));
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-7 ">
+                                                {days.map((day, index) => {
+                                                    return (
+                                                        <h1
+                                                            key={index}
+                                                            className="grid text-sm text-center text-[#6b7280] select-none h-14 w-14 place-content-center"
+                                                        >
+                                                            {day}
+                                                        </h1>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            <div className="grid grid-cols-7 ">
+                                                {generateDate(today.month(), today.year()).map(
+                                                    ({ date, currentMonth, today }, index) => {
+                                                        return (
+                                                            <div
+                                                                key={index}
+                                                                className="grid p-2 text-sm text-center border-t h-14 place-content-center"
+                                                            >
+                                                                <h1
+                                                                    className={cn(
+                                                                        currentMonth ? "" : "text-[#9ca3af]",
+                                                                        today
+                                                                            ? "bg-[#dc2626] text-[#fff]"
+                                                                            : "",
+                                                                        selectDate
+                                                                            .toDate()
+                                                                            .toDateString() ===
+                                                                            date.toDate().toDateString()
+                                                                            ? "bg-primaryBlue text-[#fff]"
+                                                                            : "",
+                                                                        "h-10 w-10 rounded-full grid place-content-center hover:bg-primaryBlue hover:text-[#fff] transition-all cursor-pointer select-none"
+                                                                    )}
+                                                                    onClick={() => {
+                                                                        setSelectDate(date);
+                                                                        closeMenu();
+                                                                    }}
+                                                                >
+                                                                    {date.date()}
+                                                                </h1>
+                                                            </div>
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
                             {/* Separator */}
                             <div className="mx-2 border-r border-fadeGray"></div>
 
                             {/* Second Child Div */}
+                            {/* Return Child Div */}
                             <div className="flex flex-col items-center m-4">
                                 <div>
                                     <p className="font-normal text-[13px] text-lightDark">Return</p>

@@ -5,9 +5,9 @@ function App() {
 
 
   return (
-    <>
+    <div className="h-[200vh]">
       <SearchFieldTop/>
-    </>
+    </div>
   )
 }
 
