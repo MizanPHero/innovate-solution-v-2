@@ -19,7 +19,8 @@ import cn from "../utils/cn";
 const SearchFieldTop = () => {
 
     const [selectedOption, setSelectedOption] = useState('flight');
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isDepartDateMenu, setIsDepartDateMenu] = useState(false);
+    const [isReturnDateMenu, setIsReturnDateMenu] = useState(false);
 
 
     //from destination
@@ -67,20 +68,32 @@ const SearchFieldTop = () => {
     const days = ["S", "M", "T", "W", "T", "F", "S"];
 	const currentDate = dayjs();
 	const [today, setToday] = useState(currentDate);
-	const [selectDate, setSelectDate] = useState(currentDate);
+	const [selectDepartDate, setSelectDepartDate] = useState(currentDate);
+	const [selectReturnDate, setSelectReturnDate] = useState(currentDate);
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
     };
 
-    // for calendar
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-      };
-    
-      const closeMenu = () => {
-        setIsMenuOpen(false);
-      };
+    // for depart calendar
+    const toggleDepartMenu = () => {
+        setIsDepartDateMenu(!isDepartDateMenu);
+    };
+
+    const closeDepartMenu = () => {
+        setIsDepartDateMenu(false);
+    };
       
+    // for return calendar
+
+    const toggleReturnMenu = () => {
+        setIsReturnDateMenu(!isReturnDateMenu);
+    };
+
+    const closeReturnMenu = () => {
+        setIsReturnDateMenu(false);
+    };
+
+
     //for radio
     const options = [
         { id: "hotel", value: "hotel", label: "Hotel" },
@@ -106,16 +119,27 @@ const SearchFieldTop = () => {
     };
     
     
-    const dateString = selectDate.toDate().toDateString();
+    const dateString = selectDepartDate.toDate().toDateString();
     const dateParts = dateString.split(' ');
     const abbreviatedDayOfWeek = dateParts[0]; 
-    const formattedDate = dateParts.slice(1).join(' '); 
     const fullDayOfWeek = getFullDayName(abbreviatedDayOfWeek);
-    const formattedDateWithFullDay = `${selectDate.format('D')} ${selectDate.format('MMMM YYYY')}`;
+    const formattedDateWithFullDay = `${selectDepartDate.format('D')} ${selectDepartDate.format('MMMM YYYY')}`;
     
 
-    console.log(fromSelectedOption);
-    console.log(toSelectedOption);
+
+    const dateStringReturn = selectReturnDate.toDate().toDateString();
+    const datePartsReturn = dateStringReturn.split(' ');
+    const abbreviatedDayOfWeekReturn = datePartsReturn[0]; 
+    const fullDayOfWeekReturn = getFullDayName(abbreviatedDayOfWeekReturn);
+    const formattedDateWithFullDayReturn = `${selectReturnDate.format('D')} ${selectReturnDate.format('MMMM YYYY')}`;
+
+
+
+
+    // console.log(fromSelectedOption);
+    // console.log(toSelectedOption);
+    console.log(selectDepartDate);
+    console.log(selectReturnDate);
 
 
 
@@ -310,18 +334,18 @@ const SearchFieldTop = () => {
                         <div className="relative flex w-full border rounded-2xl border-fadeGray">
                             {/* First Child Div */}
                             {/* Depart element */}
-                            <button className="flex flex-col items-center mx-4 my-3" id="menu-button"
-                                aria-expanded={isMenuOpen}
+                            <button className="flex flex-col items-center w-full m-4" id="menu-button"
+                                aria-expanded={isDepartDateMenu}
                                 aria-haspopup="true"
-                                onClick={toggleMenu}>
-                                <div>
+                                onClick={toggleDepartMenu}>
+                                <div className="text-left">
                                     <p className="font-normal text-[13px] text-lightDark">Depart</p>
                                     <p className="text-lg font-medium text-deepDark">{formattedDateWithFullDay}</p>
                                     <p className="font-normal text-[13px] text-lightDark">{fullDayOfWeek}</p>
                                 </div>
                             </button>
 
-                            {isMenuOpen && (
+                            {isDepartDateMenu && (
                                 <div
                                     className="absolute top-28 sm:top-24 -right-[30px] sm:right-0 z-50 py-6 mt-2 origin-top-right bg-[#fff] rounded-md shadow-lg ring-1 ring-[#000] ring-opacity-5 focus:outline-none"
                                     role="menu"
@@ -385,7 +409,7 @@ const SearchFieldTop = () => {
                                                                         today
                                                                             ? "bg-[#dc2626] text-[#fff]"
                                                                             : "",
-                                                                        selectDate
+                                                                            selectDepartDate
                                                                             .toDate()
                                                                             .toDateString() ===
                                                                             date.toDate().toDateString()
@@ -394,8 +418,8 @@ const SearchFieldTop = () => {
                                                                         "h-10 w-10 rounded-full grid place-content-center hover:bg-primaryBlue hover:text-[#fff] transition-all cursor-pointer select-none"
                                                                     )}
                                                                     onClick={() => {
-                                                                        setSelectDate(date);
-                                                                        closeMenu();
+                                                                        setSelectDepartDate(date);
+                                                                        closeDepartMenu();
                                                                     }}
                                                                 >
                                                                     {date.date()}
@@ -411,17 +435,120 @@ const SearchFieldTop = () => {
                                 </div>
                             )}
                             {/* Separator */}
-                            <div className="mx-2 border-r border-fadeGray"></div>
+                            <div className="mx-2 border-r sm:mx-0 border-fadeGray"></div>
 
                             {/* Second Child Div */}
                             {/* Return Child Div */}
-                            <div className="flex flex-col items-center m-4">
+                            {/* <div className="flex flex-col items-center m-4">
                                 <div>
                                     <p className="font-normal text-[13px] text-lightDark">Return</p>
                                     <p className="text-lg font-medium text-deepDark">4 January 2024</p>
                                     <p className="font-normal text-[13px] text-lightDark">Sunday</p>
                                 </div>
-                            </div>
+                            </div> */}
+
+
+                            <button className="flex flex-col items-center w-full m-4" id="return-menu-button"
+                                aria-expanded={isReturnDateMenu}
+                                aria-haspopup="true"
+                                onClick={toggleReturnMenu}>
+                                <div className="text-left">
+                                    <p className="font-normal text-[13px] text-lightDark">Return</p>
+                                    <p className="text-lg font-medium text-deepDark">{formattedDateWithFullDayReturn}</p>
+                                    <p className="font-normal text-[13px] text-lightDark">{fullDayOfWeekReturn}</p>
+                                </div>
+                            </button>
+                            {isReturnDateMenu && (
+                                <div
+                                    className="absolute top-28 sm:top-24 -right-[30px] sm:right-0 z-50 py-6 mt-2 origin-top-right bg-[#fff] rounded-md shadow-lg ring-1 ring-[#000] ring-opacity-5 focus:outline-none"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="menu-button"
+                                    tabIndex="-1"
+                                >
+                                    <div className="px-0 py-1" role="none">
+                                        <div className="px-4 w-96 h-96">
+                                            <div className="flex items-center justify-between">
+                                                <h1 className="font-semibold select-none">
+                                                    {months[today.month()]}, {today.year()}
+                                                </h1>
+                                                <div className="flex items-center gap-10 ">
+                                                    <GrFormPrevious
+                                                        className="w-5 h-5 transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(today.month(today.month() - 1));
+                                                        }}
+                                                    />
+                                                    <h1
+                                                        className="transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(currentDate);
+                                                        }}
+                                                    >
+                                                        Today
+                                                    </h1>
+                                                    <GrFormNext
+                                                        className="w-5 h-5 transition-all cursor-pointer hover:scale-105"
+                                                        onClick={() => {
+                                                            setToday(today.month(today.month() + 1));
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-7 ">
+                                                {days.map((day, index) => {
+                                                    return (
+                                                        <h1
+                                                            key={index}
+                                                            className="grid text-sm text-center text-[#6b7280] select-none h-14 w-14 place-content-center"
+                                                        >
+                                                            {day}
+                                                        </h1>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            <div className="grid grid-cols-7 ">
+                                                {generateDate(today.month(), today.year()).map(
+                                                    ({ date, currentMonth, today }, index) => {
+                                                        return (
+                                                            <div
+                                                                key={index}
+                                                                className="grid p-2 text-sm text-center border-t h-14 place-content-center"
+                                                            >
+                                                                <h1
+                                                                    className={cn(
+                                                                        currentMonth ? "" : "text-[#9ca3af]",
+                                                                        today
+                                                                            ? "bg-[#dc2626] text-[#fff]"
+                                                                            : "",
+                                                                            selectReturnDate
+                                                                            .toDate()
+                                                                            .toDateString() ===
+                                                                            date.toDate().toDateString()
+                                                                            ? "bg-primaryBlue text-[#fff]"
+                                                                            : "",
+                                                                        "h-10 w-10 rounded-full grid place-content-center hover:bg-primaryBlue hover:text-[#fff] transition-all cursor-pointer select-none"
+                                                                    )}
+                                                                    onClick={() => {
+                                                                        setSelectReturnDate(date);
+                                                                        closeReturnMenu();
+                                                                    }}
+                                                                >
+                                                                    {date.date()}
+                                                                </h1>
+                                                            </div>
+                                                        );
+                                                    }
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            )}
+
+
                         </div>
                     </div>
 
