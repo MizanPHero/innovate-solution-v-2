@@ -480,12 +480,12 @@ const SearchFieldTop = () => {
             </div>
 
             {/* depart and return date element */}
-            <div className="flex w-auto sm:w-[351px]">
+            <div className="flex w-auto  sm:w-[351px]">
               <div className="relative flex w-full border rounded-2xl border-fadeGray">
                 {/* First Child Div */}
                 {/* Depart element */}
                 <button
-                  className="flex flex-col items-center w-full m-4"
+                  className="flex flex-col items-center w-full m-4 sm:mx-4 sm:my-[19px]"
                   id="menu-button"
                   aria-expanded={isDepartDateMenu}
                   aria-haspopup="true"
@@ -716,7 +716,7 @@ const SearchFieldTop = () => {
                                 </div>
                             </div> */}
                 <button
-                  className="flex flex-col items-center m-4 mr-14"
+                  className="flex flex-col items-center m-4 sm:mx-4 sm:my-[19px] mr-14"
                   id="passenger-menu-button"
                   aria-expanded={isPassengerMenu}
                   aria-haspopup="true"
