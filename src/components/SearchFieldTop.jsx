@@ -15,6 +15,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { generateDate, months } from "../utils/calendar";
 import cn from "../utils/cn";
 import AgeSelection from "./AgeSelection";
+import AgeSelectionInfant from "./AgeSelectionInfant";
 
 
 
@@ -24,6 +25,7 @@ const SearchFieldTop = () => {
     const [isDepartDateMenu, setIsDepartDateMenu] = useState(false);
     const [isReturnDateMenu, setIsReturnDateMenu] = useState(false);
     const [isPassengerMenu, setIsPassengerMenu] = useState(false);
+    const [cabinClass, setCabinClass] = useState('Economy');
 
 
     //passenger
@@ -35,11 +37,11 @@ const SearchFieldTop = () => {
 
 
   useEffect(() => {
-    setChildrenAges(Array.from({ length: childrenValue }, (_, index) => "0"));
+    setChildrenAges(Array.from({ length: childrenValue }, (_, index) => "12"));
   }, [childrenValue]);
 
   useEffect(() => {
-    setInfantAges(Array.from({ length: infantValue }, (_, index) => "0"));
+    setInfantAges(Array.from({ length: infantValue }, (_, index) => "2"));
   }, [infantValue]);
 
 
@@ -91,8 +93,14 @@ const SearchFieldTop = () => {
     const increaseInfants = () => {
       setInfantValue(infantValue + 1);
     };
+
+    const handleCabinClassChange = (e) => {
+      setCabinClass(e.target.value);
+    };
     
-    // console.log(infantValue);
+    let totalGuests = adultValue + childrenValue + infantValue
+
+    
 
 
     //from destination
@@ -708,9 +716,9 @@ const SearchFieldTop = () => {
                     <p className="font-normal text-[13px] text-lightDark">
                       Passengers
                     </p>
-                    <p className="text-lg font-medium text-deepDark">1 Guest</p>
+                    <p className="text-lg font-medium text-deepDark">{totalGuests} Guest</p>
                     <p className="font-normal text-[13px] text-lightDark">
-                      Economy Class
+                    {cabinClass}
                     </p>
                   </div>
                 </button>
@@ -723,6 +731,32 @@ const SearchFieldTop = () => {
                     aria-labelledby="menu-button"
                     tabIndex="-1"
                   >
+
+
+
+                      <div className="grid grid-cols-2 gap-2 px-3 mb-3" role="none">
+                                          <label
+                                            htmlFor="cabinClass"
+                                            className="block mb-2 text-base font-medium"
+                                          >
+                                           Cabin  Class
+                                          </label>
+                                          <select
+                                            id="cabinClass"
+                                            name="cabinClass"
+                                            value={cabinClass}
+                                            onChange={handleCabinClassChange}
+                                            className="text-xs border rounded-md outline-none border-fadeGray focus:ring-2 focus:ring-primaryBlue"
+                                          >
+                                            <option value="Economy Class">Economy Class</option>
+                                            <option value="Premium Class">Premium Class</option>
+                                            <option value="Business Class">Business Class</option>
+                                            <option value="First Class">First Class</option>
+                                          </select>
+                                        </div>
+
+
+
                     {/* adult passesnger */}
                     <div className="flex items-center justify-between gap-5 px-3">
                       <div>
@@ -808,10 +842,10 @@ const SearchFieldTop = () => {
 
 
                           {/* infants passenger */}
-                    <div className="flex items-center justify-between px-3 pt-4">
+                    <div className="flex items-center justify-between px-3 pt-3">
                       <div>
                         <span className="block text-base font-medium">Infants</span>
-                        <span className="block text-sm">Under 2 Years</span>
+                        <span className="block text-sm">&lt;2 Years</span>
                       </div>
 
                       <div className="flex items-center justify-center gap-3">
@@ -842,7 +876,7 @@ const SearchFieldTop = () => {
 
                         <div className="grid grid-cols-2 gap-2 px-2 mt-2">
                           {infantAges.map((age, index) => (
-                            <AgeSelection
+                            <AgeSelectionInfant
                               key={index}
                               index={index}
                               age={age}
@@ -866,7 +900,7 @@ const SearchFieldTop = () => {
 
 
                     <div className="px-6 pt-3 ">
-                      <button className="w-full rounded-md px-6 py-2 bg-primaryBlue text-[#fff]">
+                      <button onClick={closePassengerMenu} className="w-full rounded-3xl px-6 py-[13px] bg-primaryBlue text-[#fff]">
                         Apply
                       </button>
                     </div>
