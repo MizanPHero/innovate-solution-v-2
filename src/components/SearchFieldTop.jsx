@@ -288,22 +288,20 @@ const SearchFieldTop = () => {
             {/* left side tabs */}
             <div className="flex flex-col w-full sm:w-[125px] items-center sm:items-start gap-2 pl-[14px] pr-[14px]  sm:pr-[2px] py-[8px] rounded-2xl  bg-primaryBlue">
               <button
-                className={`flex items-center justify-center gap-2 ${
-                  isOneWayClicked
+                className={`flex items-center justify-center gap-2 ${isOneWayClicked
                     ? "bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-[6px] px-3 py-[6px]"
                     : ""
-                }`}
+                  }`}
                 onClick={handleOneWayClick}
               >
                 <OneWay />
                 <span className="text-sm font-normal text-[#fff]">One-Way</span>
               </button>
               <button
-                className={`flex items-center justify-center gap-2 ${
-                  isRoundTripClicked
+                className={`flex items-center justify-center gap-2 ${isRoundTripClicked
                     ? "bg-[#EAF4FF82] w-full sm:w-auto rounded-2xl mr-0 sm:mr-auto sm:-ml-3 px-3 py-[6px]"
                     : ""
-                }`}
+                  }`}
                 onClick={handleRoundTripClick}
               >
                 <img src={roundTrip} />
@@ -384,6 +382,19 @@ const SearchFieldTop = () => {
                         </h2>
                         <p className="text-sm font-normal text-lightDark">
                           Charles de Gaulle Airport
+                        </p>
+                      </div>
+                      <div
+                        className="px-4 py-2 rounded-md hover:bg-fadeGray hover:bg-opacity-40"
+                        onClick={() =>
+                          handleFromSelect("London", "London Airport")
+                        }
+                      >
+                        <h2 className="text-base font-medium text-deepDark">
+                        London
+                        </h2>
+                        <p className="text-sm font-normal text-lightDark">
+                        London Airport
                         </p>
                       </div>
                     </div>
@@ -585,9 +596,8 @@ const SearchFieldTop = () => {
                 {/* Second Child Div */}
                 {/* Return Child Div */}
                 <button
-                  className={`flex flex-col items-center w-full m-4 ${
-                    isOneWayClicked ? "disabledButton" : ""
-                  }`}
+                  className={`flex flex-col items-center w-full m-4 ${isOneWayClicked ? "disabledButton" : ""
+                    }`}
                   id="return-menu-button"
                   aria-expanded={isReturnDateMenu}
                   aria-haspopup="true"
@@ -718,7 +728,7 @@ const SearchFieldTop = () => {
                     </p>
                     <p className="text-lg font-medium text-deepDark">{totalGuests} Guest</p>
                     <p className="font-normal text-[13px] text-lightDark">
-                    {cabinClass}
+                      {cabinClass}
                     </p>
                   </div>
                 </button>
@@ -731,31 +741,26 @@ const SearchFieldTop = () => {
                     aria-labelledby="menu-button"
                     tabIndex="-1"
                   >
-
-
-
-                      <div className="grid grid-cols-2 gap-2 px-3 mb-3" role="none">
-                                          <label
-                                            htmlFor="cabinClass"
-                                            className="block mb-2 text-base font-medium"
-                                          >
-                                           Cabin  Class
-                                          </label>
-                                          <select
-                                            id="cabinClass"
-                                            name="cabinClass"
-                                            value={cabinClass}
-                                            onChange={handleCabinClassChange}
-                                            className="text-xs border rounded-md outline-none border-fadeGray focus:ring-2 focus:ring-primaryBlue"
-                                          >
-                                            <option value="Economy Class">Economy Class</option>
-                                            <option value="Premium Class">Premium Class</option>
-                                            <option value="Business Class">Business Class</option>
-                                            <option value="First Class">First Class</option>
-                                          </select>
-                                        </div>
-
-
+                    <div className="grid grid-cols-2 gap-2 px-3 mb-3" role="none">
+                      <label
+                        htmlFor="cabinClass"
+                        className="block mb-2 text-base font-medium"
+                      >
+                        Cabin  Class
+                      </label>
+                      <select
+                        id="cabinClass"
+                        name="cabinClass"
+                        value={cabinClass}
+                        onChange={handleCabinClassChange}
+                        className="text-xs border rounded-md outline-none border-fadeGray focus:ring-2 focus:ring-primaryBlue"
+                      >
+                        <option value="Economy Class">Economy Class</option>
+                        <option value="Premium Class">Premium Class</option>
+                        <option value="Business Class">Business Class</option>
+                        <option value="First Class">First Class</option>
+                      </select>
+                    </div>
 
                     {/* adult passesnger */}
                     <div className="flex items-center justify-between gap-5 px-3">
@@ -815,7 +820,7 @@ const SearchFieldTop = () => {
                         <span className="block text-base font-normal">
                           {childrenValue}
                         </span>
-                        
+
                         <button
                           className="p-1 rounded-md bg-[#e2e8f0] hover:bg-[#cbd5e1]"
                           onClick={increaseChildren}
@@ -838,10 +843,7 @@ const SearchFieldTop = () => {
                       ))}
                     </div>
 
-
-
-
-                          {/* infants passenger */}
+                    {/* infants passenger */}
                     <div className="flex items-center justify-between px-3 pt-3">
                       <div>
                         <span className="block text-base font-medium">Infants</span>
@@ -871,33 +873,19 @@ const SearchFieldTop = () => {
                       </div>
                     </div>
 
+                    {/* Render age selection for each infant */}
 
-                        {/* Render age selection for each infant */}
-
-                        <div className="grid grid-cols-2 gap-2 px-2 mt-2">
-                          {infantAges.map((age, index) => (
-                            <AgeSelectionInfant
-                              key={index}
-                              index={index}
-                              age={age}
-                              onChange={handleInfantAgeChange}
-                              isInfant
-                            />
-                          ))}
-                        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <div className="grid grid-cols-2 gap-2 px-2 mt-2">
+                      {infantAges.map((age, index) => (
+                        <AgeSelectionInfant
+                          key={index}
+                          index={index}
+                          age={age}
+                          onChange={handleInfantAgeChange}
+                          isInfant
+                        />
+                      ))}
+                    </div>
 
                     <div className="px-6 pt-3 ">
                       <button onClick={closePassengerMenu} className="w-full rounded-3xl px-6 py-[13px] bg-primaryBlue text-[#fff]">
